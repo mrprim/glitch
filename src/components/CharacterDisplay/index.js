@@ -7,12 +7,9 @@ const CharacterDisplay = () => {
   return <Character {...character} />
 }
 
-const Character = ({ eide, hat, name, gender }) =>
+const Character = props =>
   <>
-    <div>Hat: {hat}</div>
-    <div>Name: {name}</div>
-    <div>Gender: {gender}</div>
-    <div>Eide: {eide} </div>
+    {JSON.stringify(props)}
   </>
 
 export default CharacterDisplay

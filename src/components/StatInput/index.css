@@ -1,0 +1,19 @@
+.dot {
+  cursor: pointer;
+}
+
+.dot.unselected {
+  color: lightblue;
+}
+
+.dot.selected {
+  color: black;
+}
+
+.dot.hovered {
+  color: cornflowerblue;
+}
+
+.dot.selected.hovered {
+  color: blue;
+}
