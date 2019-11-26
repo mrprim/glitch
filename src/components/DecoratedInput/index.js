@@ -4,7 +4,7 @@ import { useField } from 'amiable-forms'
 
 const DecoratedInput = props => {
   const { value, onChange } = useField({ name: props.name })
-  return <TextField {...props} value={value} onChange={onChange} />
+  return <TextField style={{ width: '100%' }} {...props} value={value} onChange={onChange} />
 }
 
 export default DecoratedInput

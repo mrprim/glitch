@@ -33,13 +33,13 @@ export const lore = [
 
 export const wyrd = [
   { name: 'World-Bound', description: '“World-Bound” characters are practically mortal.' },
-  { name: 'Wyrdlings”', description: '“Wyrdlings” have seen hints of the void’s alienness.' },
-  { name: 'Ninuanni”', description: '“Ninuanni” are more their original, Excrucian self than they are their mortal one.' },
-  { name: 'Armigers”', description: '“Armigers” have made a further study of their Wyrd... and found it tainted by infection.' },
+  { name: 'Wyrdlings', description: '“Wyrdlings” have seen hints of the void’s alienness.' },
+  { name: 'Ninuanni', description: '“Ninuanni” are more their original, Excrucian self than they are their mortal one.' },
+  { name: 'Armigers', description: '“Armigers” have made a further study of their Wyrd... and found it tainted by infection.' },
   { name: 'Sword-Bearers', description: '“Sword-Bearers” are cleaner weapons of the void.' },
-  { name: 'Postulants”', description: '“Postulants” grow disaffected with destruction.' },
-  { name: 'Potentates”', description: '“Potentates” build a Wyrd resistant to the Glitch.' },
-  { name: 'Illuminates”', description: '“Illuminates” have begun to shed their mortal self and worldly form.' }
+  { name: 'Postulants', description: '“Postulants” grow disaffected with destruction.' },
+  { name: 'Potentates', description: '“Potentates” build a Wyrd resistant to the Glitch.' },
+  { name: 'Illuminates', description: '“Illuminates” have begun to shed their mortal self and worldly form.' }
 ]
 
 export const ability = [
