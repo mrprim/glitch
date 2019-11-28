@@ -1,15 +1,14 @@
 import React from 'react'
-import { useRepeatedField } from 'amiable-forms'
+import { useArrayField } from 'amiable-forms'
 import InputLabel from '@material-ui/core/InputLabel'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import DefaultInput from './DefaultInput'
 
 const RepeatedField = ({ label, name, Component = DefaultInput }) => {
-  const { add, elements } = useRepeatedField({
+  const { add, elements } = useArrayField({
     Component,
-    prefix: name,
-    delimiter: '.',
+    name,
     props: {
       placeholder: name
     }

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { Form, useFieldValue } from 'amiable-forms'
+import { Form, useFieldValue, Debug } from 'amiable-forms'
 import Input from '../Input'
 import SubmitButton from '../SubmitButton'
 import * as actions from '../../actions'
@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid'
 import Points from '../Points'
 import Costs from '../Costs'
 import RepeatedField from '../RepeatedField'
+import saveCharacter from '../../async/putCharacter'
 
 const initialValues = ({
   eide: 0,
@@ -29,9 +30,17 @@ const CharacterForm = () => {
   const dispatch = useDispatch()
 
   const onSubmit = useCallback(
-    values => dispatch(actions.setCharacter(values)),
+    values => {
+      dispatch(actions.setCharacter(values))
+      save(values)
+    },
+
     [dispatch]
   )
+
+  const save = async character => {
+    console.log('CHARS', await saveCharacter(character))
+  }
 
   return (
     <Form transform={transform} initialValues={initialValues} process={onSubmit}>
@@ -60,9 +69,14 @@ const CharacterForm = () => {
             <Costs />
             <Points />
           </Grid>
+
+          <Grid item xs={12}>
+
+            <SubmitButton>Submit</SubmitButton>
+          </Grid>
         </Grid>
 
-        <SubmitButton>Submit</SubmitButton>
+        {/* <Debug /> */}
       </Grid>
     </Form>
   )
@@ -83,9 +97,9 @@ const calculatePoints = ({ next }) => {
     lore: values.lore * 2,
     wyrd: values.wyrd * 2,
     ability: values.ability * 3,
-    bonds: (values.bonds).length,
-    geasa: (values.geasa).length,
-    gifts: (values.gifts).length
+    bonds: values.bonds.filter(x => x).length,
+    geasa: values.geasa.filter(x => x).length,
+    gifts: values.gifts.filter(x => x).length
   }
 
   points.total = Object.values(points).reduce((total, pt) => total + pt, 0)

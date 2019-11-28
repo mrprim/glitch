@@ -9,7 +9,7 @@ const RepeatedInputField = ({ prefix, remove, placeholder }) => {
   const inputProps = { endAdornment: <CancelAdornment remove={remove} /> }
   return (
     <div>
-      <DecoratedInput name={prefix + 'value'} placeholder={placeholder} InputProps={inputProps} />
+      <DecoratedInput name={prefix} placeholder={placeholder} InputProps={inputProps} />
     </div>
   )
 }

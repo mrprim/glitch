@@ -5,13 +5,18 @@ import Header from '../Header'
 import CharacterForm from '../CharacterForm'
 import CharacterDisplay from '../CharacterDisplay'
 import Container from '@material-ui/core/Container'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 const App = () =>
   <Provider store={store}>
     <Container>
-      <Header />
-      <CharacterForm />
-      <CharacterDisplay />
+      <Router>
+        <Header />
+        <CharacterForm />
+        <Route path='/:id'>
+          <CharacterDisplay />
+        </Route>
+      </Router>
     </Container>
   </Provider>
 
