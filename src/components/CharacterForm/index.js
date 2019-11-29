@@ -1,71 +1,87 @@
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { Form, useFieldValue, Debug } from 'amiable-forms'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouteMatch } from 'react-router'
+import { Form, useSubmit } from 'amiable-forms'
 import Input from '../Input'
-import SubmitButton from '../SubmitButton'
 import * as actions from '../../actions'
 import StatInput from '../StatInput'
 import DecoratedInput from '../DecoratedInput'
 import InputLabel from '@material-ui/core/InputLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import * as statLevels from '../../constants/statLevels'
 import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import SaveIcon from '@material-ui/icons/Save'
 import Points from '../Points'
 import Costs from '../Costs'
 import RepeatedField from '../RepeatedField'
-import saveCharacter from '../../async/putCharacter'
+import putCharacter from '../../async/putCharacter'
+import postCharacter from '../../async/postCharacter'
+import * as labels from '../../constants/labels'
+import './index.css'
 
 const initialValues = ({
+  name: '',
+  hat: '',
+  pronouns: '',
   eide: 0,
   flore: 0,
   lore: 0,
   wyrd: 0,
   ability: 0,
-  bonds: [],
-  geasa: [],
-  gifts: []
+  bonds: [null],
+  geasa: [null],
+  gifts: [null]
 })
 
 const CharacterForm = () => {
+  const { params } = useRouteMatch('/:id')
+  const { id } = params
   const dispatch = useDispatch()
+  const character = useSelector(s => s.character)
 
   const onSubmit = useCallback(
-    values => {
-      dispatch(actions.setCharacter(values))
-      save(values)
+    async values => {
+      let newId
+      if (id) {
+        await postCharacter(id, values)
+      } else {
+        newId = await putCharacter(values)
+      }
+      console.log(newId || id)
+      await dispatch(actions.setCharacter(values))
     },
 
-    [dispatch]
+    [dispatch, id]
   )
 
-  const save = async character => {
-    console.log('CHARS', await saveCharacter(character))
-  }
+  if (id && !character.name) return null
 
+  console.log('character', character)
   return (
-    <Form transform={transform} initialValues={initialValues} process={onSubmit}>
-      <Grid container justify='center' spacing={3}>
-        <Grid container spacing={2} justify='center'>
-          <Grid item xs={12}>
-            <DecoratedInput label='Name' name='name' />
+    <Form transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
+      <Grid container spacing={3}>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <DecoratedInput name='name' />
           </Grid>
-          <Grid item xs={6}>
-            <DecoratedInput label='Pronouns' name='pronouns' />
+          <Grid item xs={4}>
+            <DecoratedInput name='pronouns' />
           </Grid>
-          <Grid item xs={6}>
-            <DecoratedInput label='Hat' name='hat' />
+          <Grid item xs={4}>
+            <DecoratedInput name='hat' randomizer generatorName='hat' />
           </Grid>
-          <Grid item xs={6}>
-            <Stat label='Eide' name='eide' Component={StatInput} />
-            <Stat label='Flore' name='flore' Component={StatInput} />
-            <Stat label='Lore' name='lore' Component={StatInput} />
-            <Stat label='Wyrd' name='wyrd' Component={StatInput} />
-            <Stat label='Ability' name='ability' Component={StatInput} />
-            <RepeatedField label='Bonds' name='bonds' />
-            <RepeatedField label='Geasa' name='geasa' />
-            <RepeatedField label='Gifts' name='gifts' />
+          <Grid item xs={4}>
+            <Stat name='eide' Component={StatInput} />
+            <Stat name='flore' Component={StatInput} />
+            <Stat name='lore' Component={StatInput} />
+            <Stat name='wyrd' Component={StatInput} />
+            <Stat name='ability' Component={StatInput} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
+            <RepeatedField name='bonds' />
+            <RepeatedField name='geasa' />
+            <RepeatedField name='gifts' />
+          </Grid>
+          <Grid item xs={4}>
             <Costs />
             <Points />
           </Grid>
@@ -122,14 +138,30 @@ const calculateCosts = ({ next }) => {
 }
 
 const Stat = ({ name, label, Component = Input }) => {
-  const val = useFieldValue({ name })
+  label = labels[name] || name
+
   return (
-    <div>
+    <div className='stat'>
       <InputLabel shrink>{label}</InputLabel>
       <Component name={name} />
-      <FormHelperText>{statLevels[name][val || 0].description}</FormHelperText>
     </div>
   )
+}
+
+const SubmitButton = props => {
+  const { onSubmit } = useSubmit()
+  return (
+    <Button
+      variant='contained'
+      color='primary'
+      size='large'
+      startIcon={<SaveIcon />}
+      onClick={onSubmit}
+    >
+    Save
+    </Button>
+  )
+  // <button {...props} onClick={onSubmit}>{props.children}</button>
 }
 
 export default CharacterForm

@@ -6,6 +6,7 @@ import CharacterForm from '../CharacterForm'
 import CharacterDisplay from '../CharacterDisplay'
 import Container from '@material-ui/core/Container'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import './index.css'
 
 const App = () =>
   <Provider store={store}>

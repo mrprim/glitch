@@ -4,22 +4,25 @@ import InputLabel from '@material-ui/core/InputLabel'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import DefaultInput from './DefaultInput'
+import * as labels from '../../constants/labels'
+import './index.css'
 
 const RepeatedField = ({ label, name, Component = DefaultInput }) => {
+  label = label || labels[name] || name
   const { add, elements } = useArrayField({
     Component,
-    name,
-    props: {
-      placeholder: name
-    }
+    name
   })
 
   return (
-    <div>
+    <div className='repeated-field'>
       <InputLabel shrink>
-        {label} <IconButton onClick={add}><AddIcon fontSize='small' /></IconButton>
+        {label}
       </InputLabel>
       {elements}
+      <IconButton onClick={add}>
+        <AddIcon />
+      </IconButton>
     </div>
   )
 }

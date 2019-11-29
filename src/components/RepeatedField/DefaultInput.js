@@ -3,13 +3,13 @@ import React from 'react'
 import DecoratedInput from '../DecoratedInput'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import ClearIcon from '@material-ui/icons/Clear'
+import ClearIcon from '@material-ui/icons/ClearRounded'
 
-const RepeatedInputField = ({ prefix, remove, placeholder }) => {
+const RepeatedInputField = ({ prefix, remove }) => {
   const inputProps = { endAdornment: <CancelAdornment remove={remove} /> }
   return (
     <div>
-      <DecoratedInput name={prefix} placeholder={placeholder} InputProps={inputProps} />
+      <DecoratedInput unlabeled name={prefix} InputProps={inputProps} />
     </div>
   )
 }

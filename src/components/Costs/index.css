@@ -1,0 +1,10 @@
+.costs-container {
+  margin-bottom: 1em;
+}
+
+.costs-container th {
+  font-family: "Oleo Script";
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.54)
+}
