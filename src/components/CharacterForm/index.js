@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useHistory } from 'react-router'
+import useRouteParams from '../../hooks/useRouteParams'
 import { Form, useSubmit } from 'amiable-forms'
 import Input from '../Input'
 import * as actions from '../../actions'
@@ -17,6 +18,7 @@ import putCharacter from '../../async/putCharacter'
 import postCharacter from '../../async/postCharacter'
 import * as labels from '../../constants/labels'
 import './index.css'
+import useAsyncOps from '../../hooks/useAsyncOps'
 
 const initialValues = ({
   name: '',
@@ -33,41 +35,39 @@ const initialValues = ({
 })
 
 const CharacterForm = () => {
-  const { params } = useRouteMatch('/:id')
-  const { id } = params
+  const { id } = useRouteParams('/:id')
+  const history = useHistory()
   const dispatch = useDispatch()
+  const { loading } = useAsyncOps('loadCharacter')
   const character = useSelector(s => s.character)
 
   const onSubmit = useCallback(
     async values => {
-      let newId
       if (id) {
         await postCharacter(id, values)
+        await dispatch(actions.setCharacter(values))
       } else {
-        newId = await putCharacter(values)
+        const newId = await putCharacter(values)
+        history.push('/' + newId)
       }
-      console.log(newId || id)
-      await dispatch(actions.setCharacter(values))
     },
-
-    [dispatch, id]
+    [dispatch, id, history]
   )
 
-  if (id && !character.name) return null
+  if (loading) return null
 
-  console.log('character', character)
   return (
     <Form transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
       <Grid container spacing={3}>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <DecoratedInput name='name' />
+            <DecoratedInput name='name' required />
           </Grid>
           <Grid item xs={4}>
             <DecoratedInput name='pronouns' />
           </Grid>
           <Grid item xs={4}>
-            <DecoratedInput name='hat' randomizer generatorName='hat' />
+            <DecoratedInput name='hat' randomizer generatorName='hat' required />
           </Grid>
           <Grid item xs={4}>
             <Stat name='eide' Component={StatInput} />

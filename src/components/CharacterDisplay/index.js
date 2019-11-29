@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
+import useAsyncOps from '../../hooks/useAsyncOps'
 import getCharacter from '../../async/getCharacter'
 import * as actions from '../../actions'
 
@@ -16,7 +17,14 @@ const CharacterDisplay = () => {
     dispatch(actions.setCharacter(character))
   }, [id, dispatch])
 
-  useEffect(() => { load() }, [load])
+  const { loading, callAsync } = useAsyncOps('loadCharacter', load)
+
+  useEffect(() => { callAsync() }, [callAsync])
+
+  if (loading) {
+    return <h1>LOADING</h1>
+  }
+
   return <Character id={id} {...character} />
 }
 

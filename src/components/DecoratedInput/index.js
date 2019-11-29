@@ -6,9 +6,11 @@ import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import DiceIcon from '@material-ui/icons/CasinoTwoTone'
 import rand from 'random-rpg-stuff'
+import { required as requiredValidator } from '../../utils/validators'
 
 const DecoratedInput = props => {
-  const { value, onChange, setValue } = useField({ name: props.name })
+  const validators = setupValidators(props)
+  const { error, touched, value, onChange, setValue, submitted } = useField({ name: props.name, validators })
   const label = !props.unlabeled ? props.label || labels[props.name] || props.name : null
   const p = {
     ...cleanProps(props),
@@ -16,6 +18,8 @@ const DecoratedInput = props => {
     label,
     value,
     onChange,
+    error: !!((touched || submitted) && error),
+    helperText: (touched || submitted) && error,
     InputProps: props.InputProps || (props.randomizer && { endAdornment: <RandomizerAdornment IconComponent={props.AdornmentIcon} generatorName={props.generatorName} setValue={setValue} /> })
   }
 
@@ -28,7 +32,17 @@ const cleanProps = props => {
   delete p.randomizer
   delete p.IconComponent
   delete p.generatorName
+  delete p.validators
+  delete p.required
   return p
+}
+
+const setupValidators = ({ validators, required }) => {
+  const v = validators || []
+  if (required) {
+    v.push(requiredValidator)
+  }
+  return v
 }
 
 const RandomizerAdornment = ({ generatorName, setValue, IconComponent = DiceIcon }) => {

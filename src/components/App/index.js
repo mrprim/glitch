@@ -6,19 +6,22 @@ import CharacterForm from '../CharacterForm'
 import CharacterDisplay from '../CharacterDisplay'
 import Container from '@material-ui/core/Container'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { AsyncOpsContextProvider } from '../../hooks/useAsyncOps'
 import './index.css'
 
 const App = () =>
-  <Provider store={store}>
-    <Container>
-      <Router>
-        <Header />
-        <CharacterForm />
-        <Route path='/:id'>
-          <CharacterDisplay />
-        </Route>
-      </Router>
-    </Container>
-  </Provider>
+  <AsyncOpsContextProvider>
+    <Provider store={store}>
+      <Container>
+        <Router>
+          <Header />
+          <CharacterForm />
+          <Route path='/:id'>
+            <CharacterDisplay />
+          </Route>
+        </Router>
+      </Container>
+    </Provider>
+  </AsyncOpsContextProvider>
 
 export default App
