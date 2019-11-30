@@ -1,20 +1,21 @@
 import React, { useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import useAsyncOps from '../../hooks/useAsyncOps'
+import useCharacter from '../../hooks/useCharacter'
 import getCharacter from '../../async/getCharacter'
 import * as actions from '../../actions'
 
 const CharacterDisplay = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const character = useSelector(s => s.character)
+  const character = useCharacter(id)
 
   const load = useCallback(async () => {
     if (!id) return
     const character = await getCharacter(id)
 
-    dispatch(actions.setCharacter(character))
+    dispatch(actions.setCharacter(id, character))
   }, [id, dispatch])
 
   const { loading, callAsync } = useAsyncOps('loadCharacter', load)

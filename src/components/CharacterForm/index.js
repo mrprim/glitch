@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import useRouteParams from '../../hooks/useRouteParams'
 import { Form, useSubmit } from 'amiable-forms'
@@ -19,6 +19,7 @@ import postCharacter from '../../async/postCharacter'
 import * as labels from '../../constants/labels'
 import './index.css'
 import useAsyncOps from '../../hooks/useAsyncOps'
+import useCharacter from '../../hooks/useCharacter'
 
 const initialValues = ({
   name: '',
@@ -35,20 +36,20 @@ const initialValues = ({
 })
 
 const CharacterForm = () => {
-  const { id } = useRouteParams('/:id')
+  const { id } = useRouteParams('/character/:id')
   const history = useHistory()
   const dispatch = useDispatch()
   const { loading } = useAsyncOps('loadCharacter')
-  const character = useSelector(s => s.character)
+  const character = useCharacter(id)
 
   const onSubmit = useCallback(
     async values => {
       if (id) {
         await postCharacter(id, values)
-        await dispatch(actions.setCharacter(values))
+        await dispatch(actions.setCharacter(id, values))
       } else {
         const newId = await putCharacter(values)
-        history.push('/' + newId)
+        history.push('/character/' + newId)
       }
     },
     [dispatch, id, history]

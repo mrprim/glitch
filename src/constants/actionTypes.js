@@ -1,1 +1,2 @@
+export const SET_CHARACTERS = 'SET_CHARACTERS'
 export const SET_CHARACTER = 'SET_CHARACTER'
