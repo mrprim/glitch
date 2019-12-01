@@ -1,8 +1,9 @@
 import React from 'react'
 import { useArrayField } from 'amiable-forms'
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
 import DefaultInput from './DefaultInput'
+import * as addLabels from '../../constants/addLabels'
 
 const RepeatedField = ({ label, name, Component = DefaultInput }) => {
   const { add, elements } = useArrayField({
@@ -16,9 +17,14 @@ const RepeatedField = ({ label, name, Component = DefaultInput }) => {
   return (
     <div className='repeated-field'>
       {elements}
-      <IconButton onClick={add}>
-        <AddIcon />
-      </IconButton>
+      <Button
+        style={{ width: '100%' }}
+        size='small'
+        startIcon={<AddIcon />}
+        onClick={add}
+      >
+        {addLabels[name] || 'Add'}
+      </Button>
     </div>
   )
 }

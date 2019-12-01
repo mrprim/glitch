@@ -43,16 +43,13 @@ const CharacterForm = ({ id, setIsEditing }) => {
 
   const onSubmit = useCallback(
     async values => {
+      const newValues = cleanValues(values)
       if (id) {
-        console.log('ID', id)
-        console.log('VALUES', values)
-        if (values) {
-          await postCharacter(id, values)
-          await dispatch(actions.setCharacter(id, values))
-        }
+        await postCharacter(id, newValues)
+        await dispatch(actions.setCharacter(id, newValues))
         cancelEditing()
       } else {
-        const newId = await putCharacter(values)
+        const newId = await putCharacter(newValues)
         history.push('/character/' + newId)
       }
     },
@@ -102,6 +99,13 @@ const CharacterForm = ({ id, setIsEditing }) => {
     </Form>
   )
 }
+
+const cleanValues = values => ({
+  ...values,
+  bonds: values.bonds.filter(x => x),
+  geasa: values.geasa.filter(x => x),
+  gifts: values.gifts.filter(x => x)
+})
 
 const transform = ({ current, next }) => {
   next = calculatePoints({ current, next })
