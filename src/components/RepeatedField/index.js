@@ -18,7 +18,6 @@ const RepeatedField = ({ label, name, Component = DefaultInput }) => {
     <div className='repeated-field'>
       {elements}
       <Button
-        style={{ width: '100%' }}
         size='small'
         startIcon={<AddIcon />}
         onClick={add}
