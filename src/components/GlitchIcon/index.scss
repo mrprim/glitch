@@ -1,6 +1,9 @@
 .glitch-icon {
   position: relative;
-  animation: open 1s ease-out;
+
+  &.opens {
+    animation: open 1s ease-out;
+  }
 
   .eye-icon {
     position: absolute;

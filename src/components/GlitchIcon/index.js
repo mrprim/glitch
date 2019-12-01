@@ -6,8 +6,8 @@ import './index.scss'
 const DEFAULT_SIZE = '1'
 const DEFAULT_UNIT = 'em'
 
-const GlitchIcon = ({ size = DEFAULT_SIZE, unit = DEFAULT_UNIT }) =>
-  <div className='glitch-icon' style={iconStyle({ size, unit })}>
+const GlitchIcon = ({ opens, size = DEFAULT_SIZE, unit = DEFAULT_UNIT }) =>
+  <div className={`glitch-icon ${opens ? 'opens' : ''}`} style={iconStyle({ size, unit })}>
     <Eye className='eye-icon' style={eyeStyle({ size, unit })} />
     <Star className='star-icon' style={starStyle({ size, unit })} />
   </div>

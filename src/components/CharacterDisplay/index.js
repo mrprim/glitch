@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import Button from '@material-ui/core/Button'
+import EditIcon from '@material-ui/icons/Edit'
 import useCharacter from '../../hooks/useCharacter'
 
 const CharacterDisplay = ({ id, setIsEditing }) => {
@@ -10,11 +11,12 @@ const CharacterDisplay = ({ id, setIsEditing }) => {
 }
 
 const Character = props => {
-  const { id, setEditing } = props
+  const { setEditing } = props
   return (
     <>
-      <h1>{id}</h1>
-      <Button onClick={setEditing}>Edit</Button>
+      <h1>{props.name}</h1>
+      <Button startIcon={<EditIcon />} color='primary' onClick={setEditing}>Edit</Button>
+
       <pre>
         {JSON.stringify(props, null, 2)}
       </pre>

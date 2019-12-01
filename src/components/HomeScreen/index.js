@@ -8,7 +8,7 @@ import './index.scss'
 const HomeScreen = () =>
   <Screen className='home'>
     <h1>A Bleak Roster</h1>
-    <GlitchIcon size='100' unit='px' />
+    <GlitchIcon opens size='100' unit='px' />
     <p>A character generator for the <span className='highlight'>Glitch RPG</span> by Jenna Moran</p>
 
     <Link to='/character'>Register a New Student</Link>
