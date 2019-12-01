@@ -1,0 +1,31 @@
+.glitch-icon {
+  position: relative;
+  animation: open 1s ease-out;
+
+  .eye-icon {
+    position: absolute;
+  }
+
+  .star-icon {
+    position: absolute;
+    animation: rotation 2s infinite linear;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
+  @keyframes open {
+    from {
+      transform: rotateX(90deg);
+    }
+    to {
+      transform: rotateX(0deg);
+    }
+  }
+}

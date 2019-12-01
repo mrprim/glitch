@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import useRouteParams from '../../hooks/useRouteParams'
 import { Form, useSubmit } from 'amiable-forms'
 import Input from '../Input'
 import * as actions from '../../actions'
@@ -35,24 +34,29 @@ const initialValues = ({
   gifts: [null]
 })
 
-const CharacterForm = () => {
-  const { id } = useRouteParams('/character/:id')
+const CharacterForm = ({ id, setIsEditing }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { loading } = useAsyncOps('loadCharacter')
   const character = useCharacter(id)
+  const cancelEditing = useCallback(() => setIsEditing(false), [setIsEditing])
 
   const onSubmit = useCallback(
     async values => {
       if (id) {
-        await postCharacter(id, values)
-        await dispatch(actions.setCharacter(id, values))
+        console.log('ID', id)
+        console.log('VALUES', values)
+        if (values) {
+          await postCharacter(id, values)
+          await dispatch(actions.setCharacter(id, values))
+        }
+        cancelEditing()
       } else {
         const newId = await putCharacter(values)
         history.push('/character/' + newId)
       }
     },
-    [dispatch, id, history]
+    [dispatch, id, history, cancelEditing]
   )
 
   if (loading) return null
@@ -88,7 +92,7 @@ const CharacterForm = () => {
           </Grid>
 
           <Grid item xs={12}>
-
+            {id ? <CancelButton onClick={cancelEditing} /> : null}
             <SubmitButton>Submit</SubmitButton>
           </Grid>
         </Grid>
@@ -149,7 +153,17 @@ const Stat = ({ name, label, Component = Input }) => {
   )
 }
 
-const SubmitButton = props => {
+const CancelButton = ({ onClick }) =>
+  <Button
+    variant='contained'
+    color='secondary'
+    size='large'
+    onClick={onClick}
+  >
+    Cancel
+  </Button>
+
+const SubmitButton = () => {
   const { onSubmit } = useSubmit()
   return (
     <Button
@@ -162,7 +176,6 @@ const SubmitButton = props => {
     Save
     </Button>
   )
-  // <button {...props} onClick={onSubmit}>{props.children}</button>
 }
 
 export default CharacterForm
