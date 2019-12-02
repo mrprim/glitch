@@ -5,10 +5,12 @@
   "dependencies": {
     "amiable-forms": "^0.3.6",
     "firebase": "^7.5.0",
+    "firebaseui": "^4.3.0",
     "node-sass": "^4.13.0",
     "random-rpg-stuff": "0.0.31",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-firebaseui": "^4.0.0",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",

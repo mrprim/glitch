@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Form, useSubmit } from 'amiable-forms'
 import Input from '../Input'
@@ -40,10 +40,12 @@ const CharacterForm = ({ id, setIsEditing }) => {
   const { loading } = useAsyncOps('loadCharacter')
   const character = useCharacter(id)
   const cancelEditing = useCallback(() => setIsEditing(false), [setIsEditing])
+  const { uid } = useSelector(s => s.user)
 
   const onSubmit = useCallback(
     async values => {
       const newValues = cleanValues(values)
+      newValues.createdBy = uid
       if (id) {
         await postCharacter(id, newValues)
         await dispatch(actions.setCharacter(id, newValues))
@@ -53,7 +55,7 @@ const CharacterForm = ({ id, setIsEditing }) => {
         history.push('/character/' + newId)
       }
     },
-    [dispatch, id, history, cancelEditing]
+    [dispatch, id, history, cancelEditing, uid]
   )
 
   if (loading) return null
