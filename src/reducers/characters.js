@@ -4,13 +4,18 @@ const initialState = {}
 
 const initialCharacter = {
   name: '',
-  gender: '',
+  pronouns: '',
   hat: '',
   eide: 0,
   flore: 0,
   lore: 0,
   wyrd: 0,
-  ability: 0
+  ability: 0,
+  bonds: [],
+  gifts: [],
+  geasa: [],
+  costs: {},
+  points: {}
 }
 
 const setCharacters = (state, action) => ({

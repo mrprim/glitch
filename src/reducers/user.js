@@ -1,12 +1,14 @@
 import * as actionTypes from '../constants/actionTypes'
 
 const initialState = {
+  loading: true,
   id: '',
   displayName: ''
 }
 
 const setUser = (state, { uid, displayName }) => ({
   ...state,
+  loading: false,
   uid,
   displayName
 })

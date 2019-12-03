@@ -13,7 +13,7 @@ const UserControl = ({ displayName }) => {
 }
 
 const LoggedIn = ({ displayName, logout }) =>
-  <div><Link to='/user'>{displayName || 'Anonymous'}</Link> <button onClick={logout}>Logout</button></div>
+  <div><Link to='/user'>{displayName || 'Guest'}</Link> <button onClick={logout}>Logout</button></div>
 
 const NotLoggedIn = ({ login }) =>
   <div><Link to='/login'>Log In</Link></div>
