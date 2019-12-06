@@ -1,19 +1,20 @@
 import { db } from '../firebase'
 
-const defaults = {
-  SORT: 'updated',
-  LIMIT: 100
-
+const DEFAULTS = {
+  createdBy: '',
+  sort: 'updated',
+  limit: 1000
 }
 
 export default async params => {
-  const { order = defaults.SORT, limit = defaults.LIMIT } = params || {}
+  const { createdBy, sort, limit } = { ...DEFAULTS, ...params }
   const docs = await db.collection('characters')
-    .orderBy(order, 'desc')
+    .where('createdBy', '==', createdBy)
+    .orderBy(sort, 'desc')
     .limit(limit)
     .get()
-  const rslt = {}
 
+  const rslt = {}
   docs.forEach(doc => {
     rslt[doc.id] = doc.data()
   })

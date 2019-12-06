@@ -14,7 +14,7 @@ const CharacterScreen = () => {
   const character = useCharacter(id)
 
   return (
-    <Screen className='character'>
+    <Screen className='character-screen'>
       <Body id={id} loading={loading} character={character} />
     </Screen>
   )

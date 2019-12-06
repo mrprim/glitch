@@ -64,29 +64,33 @@ const CharacterForm = ({ id, setIsEditing }) => {
     <Form transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
       <Grid container spacing={3}>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <DecoratedInput name='name' required />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <DecoratedInput name='pronouns' />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <DecoratedInput name='hat' randomizer generatorName='hat' required />
           </Grid>
-          <Grid item xs={4}>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
             <Stat name='eide' Component={StatInput} />
             <Stat name='flore' Component={StatInput} />
             <Stat name='lore' Component={StatInput} />
             <Stat name='wyrd' Component={StatInput} />
             <Stat name='ability' Component={StatInput} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <RepeatedField name='bonds' />
             <RepeatedField name='geasa' />
             <RepeatedField name='gifts' />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Costs />
+          </Grid>
+          <Grid item xs={3}>
             <Points />
           </Grid>
 

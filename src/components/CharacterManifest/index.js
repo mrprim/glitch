@@ -9,14 +9,16 @@ import * as actions from '../../actions'
 
 const CharacterManifest = ({ limit }) => {
   const dispatch = useDispatch()
+  const { uid } = useSelector(s => s.user)
   const characters = useSelector(charactersSelector)
 
   const load = useCallback(async () => {
-    const characters = await getCharacters({ limit })
+    const characters = await getCharacters({ createdBy: uid, limit })
     dispatch(actions.setCharacters(characters))
-  }, [dispatch, limit])
+  }, [dispatch, limit, uid])
 
   const { loading, callAsync } = useAsyncOps('loadCharacters', load)
+
   useEffect(() => { callAsync() }, [callAsync])
 
   return <Characters loading={loading} characters={characters} />
