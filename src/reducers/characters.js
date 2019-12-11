@@ -1,4 +1,5 @@
-import * as actionTypes from '../constants/actionTypes'
+import { matchCompleteAction } from '../async-ops/matchers'
+import * as asyncTypes from '../constants/asyncTypes'
 
 const initialState = {}
 
@@ -20,21 +21,23 @@ const initialCharacter = {
 
 const setCharacters = (state, action) => ({
   ...state,
-  ...action.characters
+  ...action.result
 })
 
 const setCharacter = (state, action) => ({
   ...state,
-  [action.id]: {
+  [action.args[0]]: {
     ...initialCharacter,
-    ...action.character
+    ...action.result
   }
 })
 
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case actionTypes.SET_CHARACTERS: return setCharacters(state, action)
-    case actionTypes.SET_CHARACTER: return setCharacter(state, action)
-    default: return state
+  if (matchCompleteAction(asyncTypes.GET_CHARACTERS)(action)) {
+    return setCharacters(state, action)
+  } else if (matchCompleteAction(asyncTypes.GET_CHARACTER)(action)) {
+    return setCharacter(state, action)
   }
+
+  return state
 }

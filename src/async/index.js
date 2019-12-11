@@ -1,0 +1,2 @@
+import './getCharacters'
+import './getCharacter'

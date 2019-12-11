@@ -17,8 +17,9 @@ import putCharacter from '../../async/putCharacter'
 import postCharacter from '../../async/postCharacter'
 import * as labels from '../../constants/labels'
 import './index.css'
-import useAsyncOps from '../../hooks/useAsyncOps'
+import useAsyncOps from '../../async-ops/useAsyncOps'
 import useCharacter from '../../hooks/useCharacter'
+import * as asyncTypes from '../../constants/asyncTypes'
 
 const initialValues = ({
   name: '',
@@ -37,7 +38,7 @@ const initialValues = ({
 const CharacterForm = ({ id, setIsEditing }) => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { loading } = useAsyncOps('loadCharacter')
+  const { loading } = useAsyncOps(asyncTypes.GET_CHARACTER)
   const character = useCharacter(id)
   const cancelEditing = useCallback(() => setIsEditing(false), [setIsEditing])
   const { uid } = useSelector(s => s.user)

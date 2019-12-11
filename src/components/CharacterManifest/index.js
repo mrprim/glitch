@@ -1,25 +1,18 @@
-import React, { useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import useAsyncOps from '../../hooks/useAsyncOps'
-import getCharacters from '../../async/getCharacters'
+import { useAsyncOps } from '../../async-ops'
+import * as asyncTypes from '../../constants/asyncTypes'
 import charactersSelector from '../../selectors/characters'
 import aAn from '../../utils/aAn'
-import * as actions from '../../actions'
 
 const CharacterManifest = ({ limit }) => {
-  const dispatch = useDispatch()
   const { uid } = useSelector(s => s.user)
   const characters = useSelector(charactersSelector)
 
-  const load = useCallback(async () => {
-    const characters = await getCharacters({ createdBy: uid, limit })
-    dispatch(actions.setCharacters(characters))
-  }, [dispatch, limit, uid])
+  const { loading, call } = useAsyncOps({ name: asyncTypes.GET_CHARACTERS })
 
-  const { loading, callAsync } = useAsyncOps('loadCharacters', load)
-
-  useEffect(() => { callAsync() }, [callAsync])
+  useEffect(() => { call({ createdBy: uid, limit }) }, [call, uid, limit])
 
   return <Characters loading={loading} characters={characters} />
 }

@@ -7,6 +7,6 @@ export default () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => console.log('user', user) || dispatch(setUser(user || {})))
+    firebase.auth().onAuthStateChanged(user => dispatch(setUser(user || {})))
   }, [dispatch])
 }

@@ -1,22 +1,18 @@
 import { useEffect, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import useAsyncOps from '../../hooks/useAsyncOps'
-import getCharacter from '../../async/getCharacter'
-import * as actions from '../../actions'
+import useAsyncOps from '../../async-ops/useAsyncOps'
+import * as asyncTypes from '../../constants/asyncTypes'
 
 export default id => {
-  const dispatch = useDispatch()
+  const { loading, call } = useAsyncOps({ name: asyncTypes.GET_CHARACTER })
 
-  const load = useCallback(async () => {
-    if (!id) return
-    const character = await getCharacter(id)
+  const load = useCallback(() => {
+    if (!id) {
+      return
+    }
+    call(id)
+  }, [id, call])
 
-    dispatch(actions.setCharacter(id, character))
-  }, [id, dispatch])
-
-  const { loading, callAsync } = useAsyncOps('loadCharacter', load)
-
-  useEffect(() => { callAsync() }, [callAsync])
+  useEffect(load, [load])
 
   return {
     loading

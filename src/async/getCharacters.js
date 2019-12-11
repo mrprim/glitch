@@ -1,4 +1,6 @@
 import { db } from '../firebase'
+import { register } from '../async-ops/registry'
+import * as asyncTypes from '../constants/asyncTypes'
 
 const DEFAULTS = {
   createdBy: '',
@@ -6,7 +8,7 @@ const DEFAULTS = {
   limit: 1000
 }
 
-export default async params => {
+const getCharacters = async params => {
   const { createdBy, sort, limit } = { ...DEFAULTS, ...params }
   const docs = await db.collection('characters')
     .where('createdBy', '==', createdBy)
@@ -21,3 +23,6 @@ export default async params => {
 
   return rslt
 }
+
+console.log('A', asyncTypes)
+register(asyncTypes.GET_CHARACTERS, getCharacters)
