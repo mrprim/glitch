@@ -1,2 +1,7 @@
 export const GET_CHARACTERS = 'GET_CHARACTERS'
 export const GET_CHARACTER = 'GET_CHARACTER'
+export const GET_USER = 'GET_USER'
+export const AUTH_SIGN_OUT = 'AUTH_SIGN_OUT'
+export const POST_CHARACTER = 'POST_CHARACTER'
+export const POST_USER = 'POST_USER'
+export const PUT_CHARACTER = 'PUT_CHARACTER'

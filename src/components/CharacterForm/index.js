@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Form, useSubmit } from 'amiable-forms'
 import Input from '../Input'
-import * as actions from '../../actions'
 import StatInput from '../StatInput'
 import DecoratedInput from '../DecoratedInput'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -13,8 +12,6 @@ import SaveIcon from '@material-ui/icons/Save'
 import Points from '../Points'
 import Costs from '../Costs'
 import RepeatedField from '../RepeatedField'
-import putCharacter from '../../async/putCharacter'
-import postCharacter from '../../async/postCharacter'
 import * as labels from '../../constants/labels'
 import './index.css'
 import useAsyncOps from '../../async-ops/useAsyncOps'
@@ -37,8 +34,9 @@ const initialValues = ({
 
 const CharacterForm = ({ id, setIsEditing }) => {
   const history = useHistory()
-  const dispatch = useDispatch()
   const { loading } = useAsyncOps(asyncTypes.GET_CHARACTER)
+  const { call: callPutCharacter } = useAsyncOps({ name: asyncTypes.PUT_CHARACTER })
+  const { call: callPostCharacter } = useAsyncOps({ name: asyncTypes.POST_CHARACTER })
   const character = useCharacter(id)
   const cancelEditing = useCallback(() => setIsEditing(false), [setIsEditing])
   const { uid } = useSelector(s => s.user)
@@ -48,15 +46,14 @@ const CharacterForm = ({ id, setIsEditing }) => {
       const newValues = cleanValues(values)
       newValues.createdBy = uid
       if (id) {
-        await postCharacter(id, newValues)
-        await dispatch(actions.setCharacter(id, newValues))
+        await callPostCharacter(id, newValues)
         cancelEditing()
       } else {
-        const newId = await putCharacter(newValues)
+        const newId = await callPutCharacter(newValues)
         history.push('/character/' + newId)
       }
     },
-    [dispatch, id, history, cancelEditing, uid]
+    [id, history, cancelEditing, uid, callPutCharacter, callPostCharacter]
   )
 
   if (loading) return null

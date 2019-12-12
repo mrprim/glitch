@@ -1,2 +1,7 @@
 import './getCharacters'
 import './getCharacter'
+import './getUser'
+import './postCharacter'
+import './putCharacter'
+import './postUser'
+import './authSignOut'

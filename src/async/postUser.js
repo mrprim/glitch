@@ -1,7 +1,9 @@
-import firebase from 'firebase'
+import { db } from '../firebase'
+import { register } from '../async-ops/registry'
+import * as asyncTypes from '../constants/asyncTypes'
 
-export default async ({ displayName }) => {
-  const user = firebase.auth().currentUser
-
-  await user.updateProfile({ displayName })
+const postUser = async (uid, user) => {
+  await db.collection('users').doc(uid).set(user)
 }
+
+register(asyncTypes.POST_USER, postUser)

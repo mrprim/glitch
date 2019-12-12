@@ -1,6 +1,8 @@
 import { db } from '../firebase'
+import { register } from '../async-ops/registry'
+import * as asyncTypes from '../constants/asyncTypes'
 
-export default async character => {
+const putCharacter = async character => {
   character = {
     ...character,
     created: Date.now(),
@@ -10,3 +12,5 @@ export default async character => {
 
   return ref.id
 }
+
+register(asyncTypes.PUT_CHARACTER, putCharacter)
