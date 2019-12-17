@@ -24,5 +24,4 @@ const getCharacters = async params => {
   return rslt
 }
 
-console.log('A', asyncTypes)
 register(asyncTypes.GET_CHARACTERS, getCharacters)

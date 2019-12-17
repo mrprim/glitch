@@ -1,23 +1,43 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded'
 import { useAsyncOps } from '../../async-ops'
 import * as asyncTypes from '../../constants/asyncTypes'
 
 const UserControl = ({ displayName }) => {
   const user = useSelector(s => s.user)
-  const { call } = useAsyncOps({ name: asyncTypes.AUTH_SIGN_OUT })
 
   if (user.uid) {
-    return <LoggedIn {...user} logout={call} />
+    return <LoggedIn {...user} />
   }
   return <NotLoggedIn />
 }
 
-const LoggedIn = ({ displayName, logout }) =>
-  <div><Link to='/user'>{displayName || 'Click Here to Create a Nickname'}</Link> <button onClick={logout}>Logout</button></div>
+const LoggedIn = ({ displayName }) => {
+  const { push } = useHistory()
+  const { call: logout } = useAsyncOps({ name: asyncTypes.AUTH_SIGN_OUT })
 
-const NotLoggedIn = ({ login }) =>
-  <div><Link to='/login'>Log In</Link></div>
+  return (
+    <>
+      <Button color='inherit' onClick={() => push('/user')}>{displayName || 'Click Here to Create a Nickname'}</Button>
+      <IconButton color='inherit' onClick={logout}>
+        <ExitToAppRoundedIcon />
+      </IconButton>
+    </>
+  )
+}
+
+const NotLoggedIn = ({ login }) => {
+  const { push } = useHistory()
+
+  return (
+    <Button color='inherit' onClick={() => push('/login')}>
+    Login
+    </Button>
+  )
+}
 
 export default UserControl

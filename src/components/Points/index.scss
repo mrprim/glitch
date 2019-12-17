@@ -1,0 +1,17 @@
+.points-container {
+  padding: 0 1em;
+
+  &.warn  {
+    th, td {
+      color: maroon;
+    }
+  }
+
+  th {
+    color: rgba(0,0,0,0.54)
+  }
+
+  tfoot td {
+    border-bottom: none;
+  }
+}

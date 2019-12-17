@@ -13,7 +13,7 @@ import Points from '../Points'
 import Costs from '../Costs'
 import RepeatedField from '../RepeatedField'
 import * as labels from '../../constants/labels'
-import './index.css'
+import './index.scss'
 import useAsyncOps from '../../async-ops/useAsyncOps'
 import useCharacter from '../../hooks/useCharacter'
 import * as asyncTypes from '../../constants/asyncTypes'
@@ -59,48 +59,50 @@ const CharacterForm = ({ id, setIsEditing }) => {
   if (loading) return null
 
   return (
-    <Form transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
-      <Grid container spacing={3}>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <DecoratedInput name='name' required />
+    <div className='form'>
+      <Form transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
+        <Grid container spacing={3}>
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <DecoratedInput name='name' required />
+            </Grid>
+            <Grid item xs={3}>
+              <DecoratedInput name='hat' randomizer generatorName='hat' required />
+            </Grid>
+            <Grid item xs={3}>
+              <DecoratedInput name='pronouns' />
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <DecoratedInput name='pronouns' />
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <Stat name='eide' Component={StatInput} />
+              <Stat name='flore' Component={StatInput} />
+              <Stat name='lore' Component={StatInput} />
+              <Stat name='wyrd' Component={StatInput} />
+              <Stat name='ability' Component={StatInput} />
+            </Grid>
+            <Grid item xs={3}>
+              <RepeatedField name='bonds' />
+              <RepeatedField name='geasa' />
+              <RepeatedField name='gifts' />
+            </Grid>
+            <Grid item xs={3}>
+              <Costs />
+            </Grid>
+            <Grid item xs={3}>
+              <Points />
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <DecoratedInput name='hat' randomizer generatorName='hat' required />
+          <Grid container justify='right'>
+            {id ? <Grid item xs={2}><CancelButton onClick={cancelEditing} /></Grid> : null}
+            <Grid item xs={2}>
+              <SubmitButton>Submit</SubmitButton>
+            </Grid>
           </Grid>
+          {/* <Debug /> */}
         </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <Stat name='eide' Component={StatInput} />
-            <Stat name='flore' Component={StatInput} />
-            <Stat name='lore' Component={StatInput} />
-            <Stat name='wyrd' Component={StatInput} />
-            <Stat name='ability' Component={StatInput} />
-          </Grid>
-          <Grid item xs={3}>
-            <RepeatedField name='bonds' />
-            <RepeatedField name='geasa' />
-            <RepeatedField name='gifts' />
-          </Grid>
-          <Grid item xs={3}>
-            <Costs />
-          </Grid>
-          <Grid item xs={3}>
-            <Points />
-          </Grid>
-
-          <Grid item xs={12}>
-            {id ? <CancelButton onClick={cancelEditing} /> : null}
-            <SubmitButton>Submit</SubmitButton>
-          </Grid>
-        </Grid>
-
-        {/* <Debug /> */}
-      </Grid>
-    </Form>
+      </Form>
+    </div>
   )
 }
 

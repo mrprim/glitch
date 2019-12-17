@@ -7,7 +7,7 @@ const postCharacter = async (id, character) => {
     ...character,
     updated: Date.now()
   }
-  await db.collection('characters').doc(id).set(character)
+  await db.collection('characters').doc(id).update(character)
 }
 
 register(asyncTypes.POST_CHARACTER, postCharacter)

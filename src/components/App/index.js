@@ -1,12 +1,9 @@
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import store from '../../store'
 import useLoadSignedInUser from './useLoadSignedInUser'
-import HomeScreen from '../HomeScreen'
-import CharacterScreen from '../CharacterScreen'
-import UserScreen from '../UserScreen'
-import LoginScreen from '../LoginScreen'
+import Layout from '../Layout'
 import LoadScreen from '../LoadScreen'
 import NewAsyncOpsContextProvider from '../../async-ops/Provider'
 import '../../async'
@@ -17,20 +14,7 @@ const App = () =>
     <Provider store={store}>
       <Session>
         <Router>
-          <Switch>
-            <Route exact path='/'>
-              <HomeScreen />
-            </Route>
-            <Route path='/character'>
-              <CharacterScreen />
-            </Route>
-            <Route path='/login'>
-              <LoginScreen />
-            </Route>
-            <Route path='/user'>
-              <UserScreen />
-            </Route>
-          </Switch>
+          <Layout />
         </Router>
       </Session>
     </Provider>
