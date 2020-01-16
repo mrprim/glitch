@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Form, useSubmit } from 'amiable-forms'
+import { AmiableForm, useSubmit } from 'amiable-forms'
 import DecoratedInput from '../DecoratedInput'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -19,8 +19,8 @@ const NoteForm = ({ characterId, setIsEditing }) => {
   )
 
   return (
-    <Form process={onSubmit}>
-      <Grid container spacing={3} >
+    <AmiableForm process={onSubmit}>
+      <Grid container spacing={3}>
         <Grid item>
           <DecoratedInput name='notes' required />
         </Grid>
@@ -28,7 +28,7 @@ const NoteForm = ({ characterId, setIsEditing }) => {
           <SubmitButton>Submit</SubmitButton>
         </Grid>
       </Grid>
-    </Form>
+    </AmiableForm>
   )
 }
 

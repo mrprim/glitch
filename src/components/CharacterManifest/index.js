@@ -12,7 +12,7 @@ const CharacterManifest = ({ limit }) => {
 
   const { loading, call } = useAsyncOps({ name: asyncTypes.GET_CHARACTERS })
 
-  useEffect(() => { call({ createdBy: uid, limit }) }, [call, uid, limit])
+  useEffect(() => { call({ limit }) }, [call, uid, limit])
 
   return <Characters loading={loading} characters={characters} />
 }

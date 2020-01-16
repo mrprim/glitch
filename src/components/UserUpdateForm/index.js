@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import { useSubmit, Form } from 'amiable-forms'
+import { useSubmit, AmiableForm } from 'amiable-forms'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import SaveIcon from '@material-ui/icons/Save'
@@ -20,7 +20,7 @@ const UserUpdateForm = () => {
     call(user.uid, data)
   }, [user.uid, call])
   return (
-    <Form initialValues={{ ...user }} process={onSubmit}>
+    <AmiableForm initialValues={{ ...user }} process={onSubmit}>
       <Grid container justify='center' spacing={3}>
         <Grid item xs={4}>
           <DecoratedInput name='displayName' required />
@@ -31,7 +31,7 @@ const UserUpdateForm = () => {
           <SaveButton />
         </Grid>
       </Grid>
-    </Form>
+    </AmiableForm>
   )
 }
 

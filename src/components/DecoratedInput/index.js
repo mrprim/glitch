@@ -20,7 +20,7 @@ const DecoratedInput = props => {
     onChange,
     error: !!((touched || submitted) && error),
     helperText: (touched || submitted) && error,
-    InputProps: props.InputProps || (props.randomizer && { endAdornment: <RandomizerAdornment IconComponent={props.AdornmentIcon} generatorName={props.generatorName} setValue={setValue} /> })
+    InputProps: props.InputProps || (props.randomizer && { endAdornment: <RandomizerAdornment IconComponent={props.AdornmentIcon} generatorName={props.generatorName} generatorOptions={props.generatorOptions} setValue={setValue} /> })
   }
 
   return <TextField {...p} />
@@ -34,6 +34,7 @@ const cleanProps = props => {
   delete p.generatorName
   delete p.validators
   delete p.required
+  delete p.generatorOptions
   return p
 }
 
@@ -45,8 +46,11 @@ const setupValidators = ({ validators, required }) => {
   return v
 }
 
-const RandomizerAdornment = ({ generatorName, setValue, IconComponent = DiceIcon }) => {
-  const getRandom = useCallback(() => setValue(rand(generatorName)), [setValue, generatorName])
+const RandomizerAdornment = ({ generatorName, setValue, IconComponent = DiceIcon, generatorOptions = {} }) => {
+  const getRandom = useCallback(() => {
+    const val = rand(generatorName, generatorOptions)
+    setValue(val)
+  }, [setValue, generatorName, generatorOptions])
   return (
     <InputAdornment position='end'>
       <IconButton onClick={getRandom}>

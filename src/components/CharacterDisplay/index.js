@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Divider from '@material-ui/core/Divider'
+import Container from '@material-ui/core/Container'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import Paper from '@material-ui/core/Paper'
 import useCharacter from '../../hooks/useCharacter'
-import aAn from '../../utils/aAn'
 import * as stats from '../../constants/statLevels'
 import NoteForm from '../NoteForm'
 import './index.scss'
@@ -24,50 +27,46 @@ const Character = props => {
   const { setEditing } = props
   return (
     <div className='character-display'>
-      <Grid container spacing={2} direction='column' justify='center'>
-        <Grid container justify='center'>
-          <Grid item style={{ textAlign: 'center' }}>
-            <Typography variant='h5'>{props.name}</Typography>
-            <p>
-            Who wears {aAn(props.hat)} <B>{props.hat}</B>.
-            </p>
-          </Grid>
-        </Grid>
+      <AppBar style={{ backgroundColor: 'gray' }} position='relative'>
+        <Toolbar variant='dense'>
+          <Typography variant='h5'>{props.name}, who is dying of {props.bane}</Typography>
+          <div style={{ flexGrow: 1 }} />
+          <IconButton title='Edit' color='inherit' onClick={setEditing}>
+            <EditIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-        <Grid container justify='center'>
-          <Grid item>
-            <IconButton title='Edit' onClick={setEditing}>
-              <EditIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Paper className='sheet'>
-              <h2>Sheet</h2>
-              <h3>Stats</h3>
-              <ul>
-                <Stat name='eide' label='Eide' value={props.eide} />
-                <Stat name='flore' label='Flore' value={props.flore} />
-                <Stat name='lore' label='Lore' value={props.lore} />
-                <Stat name='wyrd' label='Wyrd' value={props.wyrd} />
-                <Stat name='ability' label='Ability' value={props.ability} />
-              </ul>
-              <List label='Bonds' values={props.bonds} />
-              <List label='Geasa' values={props.geasa} />
-              <List label='Gifts' values={props.gifts} />
+      <Container style={{ marginTop: '2em' }}>
+        <Grid container spacing={2} direction='column' justify='center'>
+          <Grid container spacing={2}>
+            <Grid item sm={6}>
+              <Paper className='sheet'>
+                <h2>Sheet</h2>
+                <h3>Stats</h3>
+                <ul>
+                  <Stat name='eide' label='Eide' value={props.eide} />
+                  <Stat name='flore' label='Flore' value={props.flore} />
+                  <Stat name='lore' label='Lore' value={props.lore} />
+                  <Stat name='wyrd' label='Wyrd' value={props.wyrd} />
+                  <Stat name='ability' label='Ability' value={props.ability} />
+                </ul>
+                <List label='Bond' values={props.bonds} />
+                <List label='Geas' values={props.geasa} />
+                <List label='Gift' values={props.gifts} />
 
-              <Costs {...props.costs} />
-            </Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className='notes'>
-              <h3>Notes</h3>
-              <NoteForm characterId={props.id} />
-            </Paper>
+                <Costs {...props.costs} />
+              </Paper>
+            </Grid>
+            <Grid item sm={6}>
+              <Paper className='notes'>
+                <h3>Notes</h3>
+                <NoteForm characterId={props.id} />
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </div>
   )
 }
@@ -92,8 +91,8 @@ const List = ({ label, values }) => {
   if (!values.length) return null
   return (
     <div>
-      <div><B>{label}</B></div>
-      {values.map((v, i) => <div key={i}>{v}</div>)}
+      {values.map((v, i) => <div key={i}><B>{label}</B>: {v}</div>)}
+      <Divider />
     </div>
   )
 }
