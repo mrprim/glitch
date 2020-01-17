@@ -81,6 +81,19 @@ const CharacterForm = ({ id, setIsEditing }) => {
               <Grid item {...QUARTER}>
                 <DecoratedInput name='hat' randomizer generatorName={generatorName.HAT} required />
               </Grid>
+              <Grid item {...QUARTER}>
+                <DecoratedInput name='technique' />
+              </Grid>
+              <Grid item {...QUARTER}>
+                <DecoratedInput name='destruction' />
+              </Grid>
+              <Grid item {...QUARTER}>
+                <DecoratedInput name='sphere' />
+              </Grid>
+              <Grid item {...QUARTER}>
+                <DecoratedInput name='sanctuary' />
+              </Grid>
+
             </Grid>
             <Grid container spacing={2}>
               <Grid item {...QUARTER}>

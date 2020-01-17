@@ -5,6 +5,7 @@ import CharacterScreen from '../CharacterScreen'
 import UserScreen from '../UserScreen'
 import LoginScreen from '../LoginScreen'
 import Header from '../Header'
+import Footer from '../Footer'
 import './index.css'
 
 const Body = () =>
@@ -29,4 +30,5 @@ export default () =>
   <div className='layout'>
     <Header />
     <Body />
+    <Footer />
   </div>

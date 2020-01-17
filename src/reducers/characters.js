@@ -6,7 +6,12 @@ const initialState = {}
 const initialCharacter = {
   name: '',
   pronouns: '',
+  bane: '',
   hat: '',
+  technique: '',
+  destruction: '',
+  sphere: '',
+  sanctuary: '',
   eide: 0,
   flore: 0,
   lore: 0,
@@ -15,6 +20,8 @@ const initialCharacter = {
   bonds: [],
   gifts: [],
   geasa: [],
+  treasures: [],
+  arcana: [],
   costs: {},
   points: {}
 }

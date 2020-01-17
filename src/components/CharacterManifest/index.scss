@@ -1,0 +1,30 @@
+.character {
+  margin-top: .5em;
+  display: block;
+  text-decoration: none;
+
+  .character-body {
+    padding: 1em;
+    text-align: left;
+
+    .character-name {
+      font-size: 1.4em;
+    }
+
+    .character-bane, .character-hat {
+      font-size: .85em;
+      color: #444;
+    }
+
+    .icon-section {
+      text-align: center;
+      font-size: 2em;
+      color: blueviolet;
+    }
+  }
+}
+
+.character:hover .character-body {
+  background-color: rgba(138, 43, 226, .05);
+}
+

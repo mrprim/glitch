@@ -1,42 +1,18 @@
 import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
-import { useHistory } from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
-import UserControl from '../UserControl'
-import GlitchIcon from '../GlitchIcon'
+import './index.scss'
 
-const Header = () =>
-// <Grid container className='header'>
-//   <Grid className='left' item xs={6}>
+const Footer = () =>
 
-//   </Grid>
-//   <Grid className='right' item xs={6}>
-//
-//   </Grid>
-// </Grid>
-
-  <AppBar color='inherit' position='sticky'>
-    <Toolbar variant='dense'>
-      <HomeButton />
-
-      <div style={{ flexGrow: 1 }} />
-      <UserControl />
-    </Toolbar>
+  <AppBar className='footer' position='relative'>
+    <p>
+      A character generator for the <span className='highlight'>Glitch RPG</span> by Jenna Moran (<KickstarterLink />).
+    </p>
   </AppBar>
 
-const HomeButton = () => {
-  const { push } = useHistory()
+const KickstarterLink = () =>
+  <a href='https://www.kickstarter.com/projects/jennamoran/glitchrpg' target='_blank' rel='noopener noreferrer'>
+    Now Kickstarting!
+  </a>
 
-  return (
-    <IconButton edge='start' onClick={() => push('/')} color='inherit'>
-      <GlitchIcon color='black' />
-    </IconButton>
-  )
-}
-
-export default Header
+export default Footer
