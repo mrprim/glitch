@@ -4,12 +4,13 @@ import DecoratedInput from '../DecoratedInput'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ClearIcon from '@material-ui/icons/ClearRounded'
-import * as labels from '../../constants/labels'
+import { useTranslation } from 'react-i18next'
 import { indexBeyondMax } from '../../utils/validators'
 
 const RepeatedInputField = ({ index, prefix, remove, name, max }) => {
+  const { t } = useTranslation()
   const props = {
-    label: labels[name] || name,
+    label: t(`label.${name}`),
     name: prefix,
     unlabeled: !!index,
     validators: [indexBeyondMax(index, max)]
@@ -18,7 +19,7 @@ const RepeatedInputField = ({ index, prefix, remove, name, max }) => {
   const inputProps = { endAdornment: <CancelAdornment remove={remove} /> }
   return (
     <div>
-      <DecoratedInput {...props} name={prefix} InputProps={inputProps} />
+      <DecoratedInput {...props} shrink name={prefix} InputProps={inputProps} />
     </div>
   )
 }

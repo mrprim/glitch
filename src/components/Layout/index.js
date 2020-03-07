@@ -7,6 +7,7 @@ import LoginScreen from '../LoginScreen'
 import Header from '../Header'
 import Footer from '../Footer'
 import './index.css'
+import QuestScreen from '../QuestScreen'
 
 const Body = () =>
   <div className='body'>
@@ -14,7 +15,7 @@ const Body = () =>
       <Route exact path='/'>
         <HomeScreen />
       </Route>
-      <Route path='/character'>
+      <Route path='/characters'>
         <CharacterScreen />
       </Route>
       <Route path='/login'>
@@ -22,6 +23,9 @@ const Body = () =>
       </Route>
       <Route path='/user'>
         <UserScreen />
+      </Route>
+      <Route path='/quests'>
+        <QuestScreen />
       </Route>
     </Switch>
   </div>

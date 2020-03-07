@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Divider from '@material-ui/core/Divider'
 import Container from '@material-ui/core/Container'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
-import Paper from '@material-ui/core/Paper'
+import EdittableDisplayField from '../EdittableDisplayField'
 import useCharacter from '../../hooks/useCharacter'
-import * as stats from '../../constants/statLevels'
+import { useAsyncOps } from '../../async-ops'
+import * as asyncTypes from '../../constants/asyncTypes'
 import './index.scss'
+import { useTranslation } from 'react-i18next'
+import { formatters, names as generatorName } from 'random-rpg-stuff'
 
 const CharacterDisplay = ({ id, setIsEditing }) => {
   const character = useCharacter(id)
@@ -20,15 +21,11 @@ const CharacterDisplay = ({ id, setIsEditing }) => {
 }
 
 const Character = props => {
-  console.log(props)
   const { setEditing } = props
   return (
     <div className='character-display'>
       <AppBar style={{ backgroundColor: 'gray' }} position='relative'>
         <Toolbar variant='dense'>
-          <Typography variant='h5'>{props.name}
-            <div style={{ fontSize: '.7em' }}>who is dying of {props.bane}</div>
-          </Typography>
           <div style={{ flexGrow: 1 }} />
           <IconButton title='Edit' color='inherit' onClick={setEditing}>
             <EditIcon />
@@ -37,49 +34,41 @@ const Character = props => {
       </AppBar>
 
       <Container style={{ marginTop: '2em' }}>
-        <Grid container spacing={2} direction='column' justify='center'>
-          <Grid container spacing={2} justify='center'>
-            <Grid item sm={6} md={4}>
-              <Paper className='sheet'>
-                <div><Labeled label='Hat'>{props.hat}</Labeled></div>
-                <div><Labeled label='Pronouns'>{props.pronouns}</Labeled></div>
-                <div><Labeled label='Bane'>{props.bane}</Labeled></div>
-                <div><Labeled label='Technique'>{props.technique}</Labeled></div>
-                <div><Labeled label='Destruction'>{props.destruction}</Labeled></div>
-                <div><Labeled label='Sphere'>{props.sphere}</Labeled></div>
-                <div><Labeled label='Sanctuary'>{props.sanctuary}</Labeled></div>
-
-                <Divider />
-                <Stat name='eide' label='Eide' value={props.eide} />
-                <Stat name='flore' label='Flore' value={props.flore} />
-                <Stat name='lore' label='Lore' value={props.lore} />
-                <Stat name='wyrd' label='Wyrd' value={props.wyrd} />
-                <Stat name='ability' label='Ability' value={props.ability} />
-                <List label='Bond' values={props.bonds} />
-                <List label='Geas' values={props.geasa} />
-                <List label='Gift' values={props.gifts} />
-              </Paper>
-            </Grid>
-
-            <Grid item sm={6} md={4}>
-              <Paper className='sheet'>
-                <Costs {...props.costs} />
-                <List label='Treasure' values={props.treasures} />
-                <List label='Arcanum' values={props.arcana} />
-              </Paper>
-            </Grid>
-
-          </Grid>
-          {/* <Grid item sm={6}>
-              <Paper className='notes'>
-                <h3>Notes</h3>
-                <NoteForm characterId={props.id} />
-              </Paper>
-            </Grid> */}
-        </Grid>
+        <Field name='name' value={props.name} characterId={props.id} />
+        <Field name='hat' value={props.hat} characterId={props.id} randomizer={{ name: generatorName.HAT }} />
+        <Field name='bane' value={props.bane} characterId={props.id} randomizer={{ name: generatorName.NOUN, options: { format: [formatters.pluralize, formatters.toLowerCase] } }} />
+        <Field name='pronouns' value={props.pronouns} characterId={props.id} />
+        <Field name='technique' value={props.technique} characterId={props.id} randomizer={{ name: [generatorName.JOB, generatorName.CLASS], options: { format: formatters.toLowerCase } }} />
+        <Field name='destruction' value={props.destruction} characterId={props.id} />
+        <Field name='sphere' value={props.sphere} characterId={props.id} randomizer={{ name: generatorName.NOUN, options: { format: formatters.pluralize } }} />
+        <Field name='sanctuary' value={props.sanctuary} characterId={props.id} />
+        <Divider />
+        <Stat name='eide' label='Eide' value={props.eide} />
+        <Stat name='flore' label='Flore' value={props.flore} />
+        <Stat name='lore' label='Lore' value={props.lore} />
+        <Stat name='wyrd' label='Wyrd' value={props.wyrd} />
+        <Stat name='ability' label='Ability' value={props.ability} />
+        <List label='Bond' values={props.bonds} />
+        <List label='Geas' values={props.geasa} />
+        <List label='Gift' values={props.gifts} />
+        <Costs {...props.costs} />
+        <List label='Treasure' values={props.treasures} />
+        <List label='Arcanum' values={props.arcana} />
       </Container>
     </div>
   )
+}
+
+const Field = ({ name, value, characterId, randomizer }) => {
+  const { call, loading } = useAsyncOps({ name: asyncTypes.POST_CHARACTER })
+  const submit = useCallback(
+    async values => {
+      call(characterId, values)
+    },
+    [characterId, call]
+  )
+
+  return <EdittableDisplayField fullWidth name={name} value={value} submit={submit} loading={loading} randomizer={randomizer} />
 }
 
 const Labeled = ({ label, children }) =>
@@ -88,14 +77,14 @@ const Labeled = ({ label, children }) =>
   </>
 
 const Stat = ({ name, label, value = 0 }) => {
+  const { t } = useTranslation()
   if (!name) {
     return null
   }
 
-  const stat = stats[name][value]
   return (
     <div>
-      <Labeled label={label}>{value}</Labeled>_<i>{stat.name}</i>
+      <Labeled label={label}>{value}</Labeled>_<i>{t(`attributeLevelName.${name}_${value}`)}</i>
     </div>
   )
 }

@@ -1,0 +1,19 @@
+.edittable-display-field-display {
+  .MuiInputBase-root.MuiInputBase-root {
+    color: black;
+  }
+
+  .MuiInputAdornment-positionEnd {
+    display: none;
+  }
+
+  &:hover .MuiInputAdornment-positionEnd {
+    display: flex;
+  }
+}
+
+.edittable-display-field-edit {
+  .save {
+    color: blue;
+  }
+}

@@ -11,7 +11,7 @@ const HomeScreen = () => {
     <Screen className='home-screen'>
       <GlitchIcon opens size='100' unit='px' />
 
-      <Link to='/character'>Enroll a New Member</Link>
+      <Link to='/characters'>Enroll a New Member</Link>
 
       <Grid container className='character-manifest' justify='center'>
         <Grid item sm={8} md={6}>

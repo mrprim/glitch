@@ -9,7 +9,7 @@ import GlitchIcon from '../GlitchIcon'
 import './index.scss'
 
 const CharacterScreen = () => {
-  const { id } = useRouteParams('/character/:id')
+  const { id } = useRouteParams('/characters/:id')
   const { loading } = useLoadCharacter(id)
   const character = useCharacter(id)
 

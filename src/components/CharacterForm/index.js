@@ -1,24 +1,22 @@
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { AmiableForm, useSubmit } from 'amiable-forms'
-import Input from '../Input'
 import StatInput from '../StatInput'
+import AttributeDescription from '../AttributeDescription'
 import DecoratedInput from '../DecoratedInput'
 import InputLabel from '@material-ui/core/InputLabel'
-import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
 import SaveIcon from '@material-ui/icons/Save'
 import Points from '../Points'
 import RepeatedField from '../RepeatedField'
-import * as labels from '../../constants/labels'
 import './index.scss'
 import useAsyncOps from '../../async-ops/useAsyncOps'
 import useCharacter from '../../hooks/useCharacter'
 import * as asyncTypes from '../../constants/asyncTypes'
-import { names as generatorName } from 'random-rpg-stuff'
-import { QUARTER } from '../../constants/columnProps'
+import { names as generatorName, formatters } from 'random-rpg-stuff'
 import useFieldValue from 'amiable-forms/dist/hooks/useFieldValue'
 
 const initialValues = ({
@@ -34,7 +32,8 @@ const initialValues = ({
   geasa: [null],
   gifts: [null],
   treasures: [null],
-  arcana: [null]
+  arcana: [null],
+  levers: [null]
 })
 
 const CharacterForm = ({ id, setIsEditing }) => {
@@ -55,7 +54,7 @@ const CharacterForm = ({ id, setIsEditing }) => {
         cancelEditing()
       } else {
         const newId = await callPutCharacter(newValues)
-        history.push('/character/' + newId)
+        history.push('/characters/' + newId)
       }
     },
     [id, history, cancelEditing, uid, callPutCharacter, callPostCharacter]
@@ -67,63 +66,28 @@ const CharacterForm = ({ id, setIsEditing }) => {
     <Container>
       <div className='form'>
         <AmiableForm transform={transform} initialValues={{ ...initialValues, ...character }} process={onSubmit}>
-          <Grid container spacing={3}>
-            <Grid container spacing={2}>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='name' required />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='bane' randomizer generatorName={generatorName.NOUN} generatorOptions={{ plural: true }} required />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='pronouns' />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='hat' randomizer generatorName={generatorName.HAT} required />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='technique' />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='destruction' />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='sphere' />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <DecoratedInput name='sanctuary' />
-              </Grid>
-
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item {...QUARTER}>
-                <Stat name='eide' Component={StatInput} />
-                <Stat name='flore' Component={StatInput} />
-                <Stat name='lore' Component={StatInput} />
-                <Stat name='wyrd' Component={StatInput} />
-                <Stat name='ability' Component={StatInput} />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <RepeatedField name='bonds' />
-                <RepeatedField name='geasa' />
-                <RepeatedField name='gifts' />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <RepeatedField name='treasures' max={12} />
-                <Arcana />
-              </Grid>
-              <Grid item {...QUARTER}>
-                <Points />
-              </Grid>
-            </Grid>
-            <Grid container justify='flex-end'>
-              {id ? <Grid item xs={2}><CancelButton onClick={cancelEditing} /></Grid> : null}
-              <Grid item xs={2}>
-                <SubmitButton>Submit</SubmitButton>
-              </Grid>
-            </Grid>
-            {/* <Debug /> */}
-          </Grid>
+          <DecoratedInput name='name' required />
+          <DecoratedInput name='bane' randomizer={{ name: generatorName.NOUN, options: { format: [formatters.pluralize, formatters.toLowerCase] } }} required />
+          <DecoratedInput name='pronouns' />
+          <DecoratedInput name='hat' randomizer={{ name: generatorName.HAT }} required />
+          <DecoratedInput name='sanctuary' />
+          <DecoratedInput name='technique' randomizer={{ name: [generatorName.JOB, generatorName.CLASS], options: { format: formatters.toLowerCase } }} />
+          <DecoratedInput name='sphere' randomizer={{ name: generatorName.NOUN, options: { format: formatters.pluralize } }} />
+          <DecoratedInput name='destruction' />
+          <Stat name='ability' />
+          <Stat name='eide' />
+          <Stat name='flore' />
+          <Stat name='lore' />
+          <Stat name='wyrd' />
+          <RepeatedField name='bonds' />
+          <RepeatedField name='geasa' />
+          <RepeatedField name='gifts' />
+          <Treasures />
+          <RepeatedField name='arcana' max={12} />
+          <RepeatedField name='levers' max={3} />
+          <Points />
+          {id ? <CancelButton onClick={cancelEditing} /> : null}
+          <SubmitButton>Submit</SubmitButton>
         </AmiableForm>
       </div>
     </Container>
@@ -178,18 +142,20 @@ const calculateCosts = ({ next }) => {
   return next
 }
 
-const Arcana = () => {
+const Treasures = () => {
   const flore = useFieldValue({ name: 'flore' })
-  return <RepeatedField name='arcana' max={flore + 1} />
+  return <RepeatedField name='treasures' max={flore + 1} />
 }
 
-const Stat = ({ name, label, Component = Input }) => {
-  label = labels[name] || name
+const Stat = ({ name, label, Component = StatInput }) => {
+  const value = useFieldValue({ name })
+  const { t } = useTranslation()
 
   return (
     <div className='stat'>
-      <InputLabel shrink>{label}</InputLabel>
+      <InputLabel shrink>{t(label || `label.${name}`)}</InputLabel>
       <Component name={name} />
+      <AttributeDescription name={name} value={value} />
     </div>
   )
 }
@@ -214,7 +180,7 @@ const SubmitButton = () => {
       startIcon={<SaveIcon />}
       onClick={onSubmit}
     >
-    Save
+      Save
     </Button>
   )
 }

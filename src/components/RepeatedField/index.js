@@ -3,7 +3,7 @@ import { useArrayField } from 'amiable-forms'
 import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
 import DefaultInput from './DefaultInput'
-import * as addLabels from '../../constants/addLabels'
+import { useTranslation } from 'react-i18next'
 import './index.scss'
 
 const RepeatedField = ({ label, name, Component = DefaultInput, max }) => {
@@ -24,9 +24,13 @@ const RepeatedField = ({ label, name, Component = DefaultInput, max }) => {
   )
 }
 
-const AddButton = ({ add, name }) =>
-  <Button size='small' startIcon={<AddIcon />} onClick={add}>
-    {addLabels[name] || 'Add'}
-  </Button>
+const AddButton = ({ add, name }) => {
+  const { t } = useTranslation()
 
+  return (
+    <Button size='small' startIcon={<AddIcon />} onClick={add}>
+      {t(`addItem.${name}`)}
+    </Button>
+  )
+}
 export default RepeatedField

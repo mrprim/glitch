@@ -24,7 +24,7 @@ const CharacterManifest = ({ limit }) => {
 const Characters = ({ characters, uid }) => characters.map(c => <Character key={c.id} {...c} uid={uid} />)
 
 const Character = ({ uid, name, hat, bane, id, createdBy }) =>
-  <Link to={`./character/${id}`} className='character'>
+  <Link to={`./characters/${id}`} className='character'>
     <Paper className='character-body'>
       <Grid container alignItems='center'>
         <Grid item xs={10}>

@@ -42,7 +42,7 @@ const getCharacter = (state, action) => ({
 const postCharacter = (state, action) => ({
   ...state,
   [action.args[0]]: {
-    ...initialCharacter,
+    ...state[action.args[0]],
     ...action.args[1]
   }
 })
